@@ -20,10 +20,13 @@ const electron = window.require('electron');
 const {ipcRenderer, shell} = electron;
 const {dialog} = electron.remote;
 
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import Divider from 'material-ui/Divider';
+import Paper from 'material-ui/Paper';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 
@@ -35,7 +38,7 @@ class MainWindow extends React.Component {
 
         this.state = {
             curPrefixLetter: 'a',
-            password: null
+            curPrefix: 'a',
         };
     }
 
@@ -45,11 +48,18 @@ class MainWindow extends React.Component {
         var style = {margin: 12};
         for (var pre in prefix) {
             prefixes.push(
-                <RaisedButton key={pre} label={pre} style={style} primary={true}
+                <RaisedButton key={pre} label={pre} style={style} primary={this.state.curPrefixLetter == pre}
                               onClick={this._handlePrefixClick.bind(this, pre)}/>
             );
         }
         return prefixes;
+    }
+
+    getFirstPrefixByLetter(letter) {
+        var prefix = require('../public/data/prefix.json');
+        for (var pre in prefix[letter]) {
+            return pre;
+        }
     }
 
     getPrefixList(letter) {
@@ -59,27 +69,59 @@ class MainWindow extends React.Component {
         var labelStyle = {"textTransform": "lowercase"};
         for (var pre in prefix[letter]) {
             prefixes.push(
-                <FlatButton key={prefix[letter][pre]}
-                            label={prefix[letter][pre]}
-                            style={style}
-                            primary={true}
+                <FlatButton key={pre} label={pre} style={style} primary={this.state.curPrefix === pre}
                             labelStyle={labelStyle}
-                              onClick={this._handlePrefixListClick.bind(this, prefix[letter][pre])}/>
+                            onClick={this._handlePrefixListClick.bind(this, pre)}/>
             );
         }
         return prefixes;
     }
 
+    getPrefixDetail(prefix) {
+        const style = {
+            margin: 20,
+            padding: 20,
+        };
+        var prefixes = require('../public/data/prefix.json');
+        var details = [];
+        var prefixNode = prefixes[this.state.curPrefixLetter][prefix];
+        for (var pre in prefixNode) {
+            var detail = prefixNode[pre];
+            details.push(
+                <Paper key={pre} style={style} zDepth={2}>
+                    <div>{detail.chinese_meaning}</div>
+                </Paper>
+            )
+        }
+
+        return details;
+    }
+
     render() {
+        var muiTheme = getMuiTheme({
+            fontFamily: "WenQuanYi Micro Hei"
+        });
+
+        var paperStyle = {
+            height: 100,
+            width: 100,
+            margin: 20,
+            textAlign: 'center',
+            display: 'inline-block',
+        };
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider muiTheme={muiTheme}>
                 <Tabs>
                     <Tab label="前缀">
                         <div>
                             {this.getPrefix()}
                         </div>
+                        <Divider />
                         <div>
                             {this.getPrefixList(this.state.curPrefixLetter)}
+                        </div>
+                        <div>
+                            {this.getPrefixDetail(this.state.curPrefix)}
                         </div>
                     </Tab>
                     <Tab label="词根">
@@ -105,34 +147,11 @@ class MainWindow extends React.Component {
 
     _handlePrefixClick(letter) {
         this.setState({curPrefixLetter: letter});
+        this.setState({curPrefix: this.getFirstPrefixByLetter(letter)});
     }
 
     _handlePrefixListClick(prefix) {
-
-    }
-
-    _handleActive(tab) {
-        alert(`A tab with this route property ${tab.props['data-route']} was activated.`);
-    }
-
-    _handleLogin() {
-        let options = {
-            type: 'info',
-            buttons: ['确定'],
-            title: '登录',
-            message: this.state.userName,
-            defaultId: 0,
-            cancelId: 0
-        };
-
-        dialog.showMessageBox(options, (response) => {
-            if (response == 0) {
-                console.log('OK pressed!');
-            }
-        });
-    }
-
-    _handleRegistry() {
+        this.setState({curPrefix: prefix});
     }
 }
 

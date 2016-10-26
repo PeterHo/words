@@ -1,10 +1,47 @@
 {
-  "a":["a", "an"],
-  "b":["be", "bi"],
-  "c":["clud", "clude"],
-  "d":["de", "decem"],
-  "e":["ef", "ex"],
-  "f":["for", "fore"],
-  "i":["im", "in"],
-  "m":["macro", "micro", "mono"]
+  "a": {
+    "a": [
+      {
+        "chinese_meaning": "否定",
+        "example": [
+          {
+            "word": "anarchy"
+          }
+        ]
+      }
+    ],
+    "an": [
+      {
+        "chinese_meaning": "否定2",
+        "example": [
+          {
+            "word": "anarchy2"
+          }
+        ]
+      }
+    ]
+  },
+  "b": {
+    "be": [
+      {
+        "chinese_meaning": "是,处在...状态",
+        "example": [
+          {
+            "word": "before"
+          }
+        ]
+      }
+    ],
+    "bi": [
+      {
+        "chinese_meaning": "两个",
+        "mnemonic": "掰,掰开就成两个了",
+        "example": [
+          {
+            "word": "bicycle"
+          }
+        ]
+      }
+    ]
+  }
 }
