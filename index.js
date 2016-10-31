@@ -1,6 +1,14 @@
 const electron = require('electron');
 const {app, BrowserWindow, Menu, ipcMain, ipcRenderer} = electron;
 
+const Datastore = require("nedb");
+const prefixDB = new Datastore({
+    filename: 'public/data/prefixDB.json',
+    autoload: true
+});
+
+console.log(prefixDB);
+
 let isDevelopment = true;
 
 if (isDevelopment) {
@@ -20,6 +28,8 @@ function createMainWnd() {
         // mainWnd.webContents.openDevTools();
     }
 
+    // mainWnd.setMenu(null);
+
     mainWnd.loadURL(`file://${__dirname}/index.html`);
 
     mainWnd.on('closed', () => {
@@ -32,3 +42,4 @@ app.on('ready', createMainWnd);
 app.on('window-all-closed', () => {
     app.quit();
 });
+

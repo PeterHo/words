@@ -1,0 +1,18 @@
+{
+  "hello": "world",
+  "n": 5,
+  "today": {
+    "$$date": 1477878368167
+  },
+  "nedbIsAwesome": true,
+  "notthere": null,
+  "fruits": [
+    "apple",
+    "orange",
+    "pear"
+  ],
+  "infos": {
+    "name": "nedb"
+  },
+  "_id": "mkkUfxMFjIWHRB20"
+}
