@@ -1,22 +1,34 @@
-const electron = require('electron');
-const {app, BrowserWindow, Menu, ipcMain, ipcRenderer} = electron;
+'use strict';
 
-const path = require('path');
-const windows = require('./windows');
-const ipc = require('./ipc');
-const menu = require('./menu');
-const tray = require('./tray')
-import config from '../config';
+var _config = require('../config');
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var electron = require('electron');
+var app = electron.app,
+    BrowserWindow = electron.BrowserWindow,
+    Menu = electron.Menu,
+    ipcMain = electron.ipcMain,
+    ipcRenderer = electron.ipcRenderer;
+
+
+var path = require('path');
+var windows = require('./windows');
+var ipc = require('./ipc');
+var menu = require('./menu');
+var tray = require('./tray');
+
 
 var menubar = tray({
     height: 450,
     showDockIcon: true,
-    index: `file://${path.resolve(__dirname, '../../static/tray.html')}`,
+    index: 'file://' + path.resolve(__dirname, '../../static/tray.html'),
     icon: path.resolve(__dirname, '../../static/images/IconTemplate.png')
 });
 
-menubar.on('ready', function () {
-});
+menubar.on('ready', function () {});
 
 function init() {
     app.on('ready', function () {
@@ -58,3 +70,4 @@ function onAppOpen() {
         windows.main.show();
     }
 }
+//# sourceMappingURL=index.js.map

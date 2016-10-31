@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/renderer/store.js"],"names":["store"],"mappings":";;;;;;AAAA;;AACA;;;;;;AACA,IAAIA,QAAQ,2CAAZ;;kBAEeA,K","file":"store.js","sourcesContent":["import { createStore, applyMiddleware } from 'redux';\nimport reducers from './reducers';\nlet store = createStore(reducers);\n\nexport default store;\n"]}
