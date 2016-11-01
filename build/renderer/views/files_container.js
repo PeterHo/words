@@ -845,3 +845,4 @@ var _initialiseProps = function _initialiseProps() {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FilesContainer);
+//# sourceMappingURL=files_container.js.map

@@ -59,4 +59,4 @@ function dispatch() {
 
     send.apply(undefined, ['dispatch'].concat(args));
 }
-//# sourceMappingURL=main.js.map
+//# sourceMappingURL=windows.js.map

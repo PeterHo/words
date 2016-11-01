@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _constants = require('./constants');
@@ -15,35 +15,35 @@ var FILES_PATH = _constants2.default.FILES_PATH;
 
 
 var defaultOptions = {
-  image: function image(href, title, text) {
-    console.log('render image');
-    var pp = /[http|https]/;
-    if (!pp.test(href)) {
-      return "<p>" + "<img src='" + FILES_PATH + '/' + href + "'/>" + "</p>";
-    } else {
-      return "<p>" + "<img src='" + href + "'/>" + "</p>";
+    image: function image(href, title, text) {
+        console.log('render image');
+        var pp = /[http|https]/;
+        if (!pp.test(href)) {
+            return "<p>" + "<img src='" + FILES_PATH + '/' + href + "'/>" + "</p>";
+        } else {
+            return "<p>" + "<img src='" + href + "'/>" + "</p>";
+        }
+    },
+    link: function link(href, title, text) {
+        var out = "<a class='external' href=\"" + href + "\"";
+        if (title) {
+            out += " title=\"" + title + "\"";
+        }
+        out += ">" + text + "</a>";
+        return out;
     }
-  },
-  link: function link(href, title, text) {
-    var out = "<a class='external' href=\"" + href + "\"";
-    if (title) {
-      out += " title=\"" + title + "\"";
-    }
-    out += ">" + text + "</a>";
-    return out;
-  }
 };
 
 function renderFactory() {
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  var markedRenderer = new marked.Renderer();
-  options = Object.assign({}, defaultOptions, options);
-  var propKeys = Object.keys(options);
-  propKeys.forEach(function (key) {
-    markedRenderer[key] = options[key];
-  });
-  return markedRenderer;
+    var markedRenderer = new marked.Renderer();
+    options = Object.assign({}, defaultOptions, options);
+    var propKeys = Object.keys(options);
+    propKeys.forEach(function (key) {
+        markedRenderer[key] = options[key];
+    });
+    return markedRenderer;
 }
 
 exports.default = renderFactory;

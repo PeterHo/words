@@ -189,3 +189,4 @@ BookForm.propTypes = {
 };
 
 exports.default = BookForm;
+//# sourceMappingURL=book_form.js.map

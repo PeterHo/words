@@ -1,10 +1,10 @@
 'use strict';
 
-var _config = require('../config');
+var _windows = require('./windows');
 
-var _config2 = _interopRequireDefault(_config);
+var wnd = _interopRequireWildcard(_windows);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var electron = require('electron');
 var app = electron.app,
@@ -13,61 +13,34 @@ var app = electron.app,
     ipcMain = electron.ipcMain,
     ipcRenderer = electron.ipcRenderer;
 
-
-var path = require('path');
-var windows = require('./windows');
 var ipc = require('./ipc');
-var menu = require('./menu');
-var tray = require('./tray');
 
-
-var menubar = tray({
-    height: 450,
-    showDockIcon: true,
-    index: 'file://' + path.resolve(__dirname, '../../static/tray.html'),
-    icon: path.resolve(__dirname, '../../static/images/IconTemplate.png')
+// 判断多开
+var shouldQuit = app.makeSingleInstance(function () {
+    if (wnd.mainWnd) {
+        if (wnd.mainWnd.isMinimized()) {
+            wnd.mainWnd.restore();
+        }
+        wnd.mainWnd.focus();
+    }
 });
 
-menubar.on('ready', function () {});
-
-function init() {
-    app.on('ready', function () {
-        windows.main.init();
-        windows.worker.init();
-        menu.init();
-    });
+if (shouldQuit) {
+    app.quit();
 }
 
-var shouldQuit = false;
-
-if (!shouldQuit) {
-    shouldQuit = app.makeSingleInstance(onAppOpen);
-    if (shouldQuit) {
-        app.quite();
-    }
-}
-
-if (!shouldQuit) {
-    init();
-}
-
+// 初始化ipc
 ipc.init();
 
+// 初始化程序
+app.on('ready', function () {
+    wnd.init();
+});
+
+// 关闭程序
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
         app.quit();
     }
 });
-
-app.on('activate', function () {
-    if (windows.main.win === null) {
-        windows.main.init();
-    }
-});
-
-function onAppOpen() {
-    if (app.ipcReady) {
-        windows.main.show();
-    }
-}
 //# sourceMappingURL=index.js.map

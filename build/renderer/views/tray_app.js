@@ -350,3 +350,4 @@ var TrayApp = function (_Component) {
 }(_react.Component);
 
 exports.default = TrayApp;
+//# sourceMappingURL=tray_app.js.map

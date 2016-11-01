@@ -85,3 +85,4 @@ ConfirmDialog.propTypes = {
   // the data is used for tmp data persistence
   tmpData: _react.PropTypes.object
 };
+//# sourceMappingURL=confirm_dialog.js.map

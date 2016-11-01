@@ -1,6 +1,6 @@
 'use strict';
 
-var _ipc = require('../ipc.js');
+var _ipc = require('../main/ipc.js');
 
 var main = module.exports = {
     init: init,

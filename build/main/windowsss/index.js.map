@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/main/windowsss/index.js"],"names":["exports","main","require","worker"],"mappings":";;AAAA;;;AAGAA,QAAQC,IAAR,GAAeC,QAAQ,QAAR,CAAf;AACAF,QAAQG,MAAR,GAAiBD,QAAQ,UAAR,CAAjB","file":"index.js","sourcesContent":["/**\n * Created by peter on 10/31/16.\n */\nexports.main = require('./main');\nexports.worker = require('./worker');"]}

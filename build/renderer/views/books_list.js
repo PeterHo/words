@@ -220,3 +220,4 @@ BooksList.propTypes = {
 };
 
 exports.default = BooksList;
+//# sourceMappingURL=books_list.js.map

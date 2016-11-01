@@ -1,15 +1,14 @@
 'use strict';
 
-var _ipc = require('../ipc.js');
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.mainWnd = undefined;
+exports.init = init;
+exports.send = send;
+exports.dispatch = dispatch;
 
-var main = module.exports = {
-    init: init,
-    show: show,
-    hide: hide,
-    send: send,
-    dispatch: dispatch,
-    win: null
-};
+var _ipc = require('./ipc.js');
 
 var electron = require('electron');
 var app = electron.app,
@@ -18,21 +17,23 @@ var app = electron.app,
 
 var path = require('path');
 
+var mainWnd = exports.mainWnd = null;
+
 function init() {
-    if (main.win) {
-        return main.win.show();
+    if (mainWnd) {
+        return mainWnd.show();
     }
 
-    var win = main.win = new BrowserWindow({
+    exports.mainWnd = mainWnd = new BrowserWindow({
         width: 1000,
         height: 800,
-        icon: '../../../static/images/app-icon.jpeg'
+        icon: '' + path.resolve(__dirname, '../../static/images/app-icon.jpeg')
     });
 
-    win.loadURL('file://' + path.resolve(__dirname, '../../../static/main.html'));
+    mainWnd.loadURL('file://' + path.resolve(__dirname, '../../static/main.html'));
 
-    win.on('closed', function () {
-        win = main.win = null;
+    mainWnd.on('closed', function () {
+        exports.mainWnd = mainWnd = null;
         _ipc.mainMsgQueue.length = 0;
         app.mainRenderReady = false;
     });
@@ -43,12 +44,12 @@ function send() {
         args[_key] = arguments[_key];
     }
 
-    if (!main.win || !app.mainRenderReady) {
+    if (!mainWnd || !app.mainRenderReady) {
         _ipc.mainMsgQueue.push(args);
     } else {
-        var _main$win;
+        var _mainWnd;
 
-        (_main$win = main.win).send.apply(_main$win, args);
+        (_mainWnd = mainWnd).send.apply(_mainWnd, args);
     }
 }
 
@@ -59,4 +60,4 @@ function dispatch() {
 
     send.apply(undefined, ['dispatch'].concat(args));
 }
-//# sourceMappingURL=main.js.map
+//# sourceMappingURL=windows.js.map

@@ -758,3 +758,4 @@ var _initialiseProps = function _initialiseProps() {
 };
 
 exports.default = ANoteEditor;
+//# sourceMappingURL=anote_editor.js.map

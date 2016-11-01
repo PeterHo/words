@@ -12,8 +12,6 @@ var _windows2 = _interopRequireDefault(_windows);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var electron = require('electron');
-
 function log() {
     var _windows$main;
 

@@ -6,7 +6,7 @@
 ```
 # electron
 cnpm i --save electron
-cnpm i --save-dev electron-rebuild
+cnpm i --save-dev electron-rebuild electron-reload
 
 # react redux
 cnpm i --save react redux

@@ -11,46 +11,47 @@ let {
 const http = require('http');
 const https = require('https');
 
-const writeFileAsyn =  Promise.promisify(fs.writeFile);
+const writeFileAsyn = Promise.promisify(fs.writeFile);
 
 const unlinkAsync = Promise.promisify(fs.unlink);
 
 function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
 }
 
-const downloadAsyn = function(url, dest) {
-  let file = fs.createWriteStream(dest)
-  return new Promise((resolve, reject) => {
-    let responseSent = false,
-      pModule = null;
-    if(url.indexOf('https') > -1){
-      pModule = https;
-    }else{
-      pModule = http;
-    }
-    pModule.get(url, response => {
-      response.pipe(file)
-      file.on('finish', () =>{
-        file.close(() => {
-          if(responseSent)  return;
-          responseSent = true
-          resolve()
+const downloadAsyn = function (url, dest) {
+    let file = fs.createWriteStream(dest)
+    return new Promise((resolve, reject) => {
+        let responseSent = false,
+            pModule = null;
+        if (url.indexOf('https') > -1) {
+            pModule = https;
+        } else {
+            pModule = http;
+        }
+        pModule.get(url, response => {
+            response.pipe(file)
+            file.on('finish', () => {
+                file.close(() => {
+                    if (responseSent)  return;
+                    responseSent = true
+                    resolve()
+                })
+            })
+        }).on('error', err => {
+            console.log('error');
+            if (responseSent)  return;
+            responseSent = true
+            reject(err)
         })
-      })
-    }).on('error', err => {
-      console.log('error');
-      if(responseSent)  return;
-      responseSent = true
-      reject(err)
     })
-  })
 };
 
 // const downloadAsyn = Promise.promisify(download);
@@ -88,35 +89,35 @@ const copyFile = (source, target) => {
 }
 
 const buffer2File = (buffer) => {
-  let tmpPath = path.resolve(TMP_FILES_PATH, `${Date.now()}`);
-  ensureDirectoryExistence(tmpPath);
-  return co(function * () {
-    yield writeFileAsyn(tmpPath, buffer);
-    let hashKey = yield getFileHash(tmpPath);
-    let key = hash2Key(hashKey);
-    yield copyFile(tmpPath, `${FILES_PATH}/${key}`);
-    yield unlinkAsync(tmpPath);
-    return `${key}`;
-  });
+    let tmpPath = path.resolve(TMP_FILES_PATH, `${Date.now()}`);
+    ensureDirectoryExistence(tmpPath);
+    return co(function *() {
+        yield writeFileAsyn(tmpPath, buffer);
+        let hashKey = yield getFileHash(tmpPath);
+        let key = hash2Key(hashKey);
+        yield copyFile(tmpPath, `${FILES_PATH}/${key}`);
+        yield unlinkAsync(tmpPath);
+        return `${key}`;
+    });
 }
 
 const downloadImageAsyn = (url) => {
-  let tmpPath = path.resolve(TMP_FILES_PATH, `${guid()}`);
-  ensureDirectoryExistence(tmpPath);
-  return co(function * () {
-    try{
-      yield downloadAsyn(url, tmpPath);
-    // 出问题了返回原来的url
-    }catch(error){
-      console.log('出问题了返回原来的url');
-      return url;
-    }
-    let hashKey = yield getFileHash(tmpPath);
-    let key = hash2Key(hashKey);
-    yield copyFile(tmpPath, `${FILES_PATH}/${key}`);
-    yield unlinkAsync(tmpPath);
-    return `${key}`;
-  });
+    let tmpPath = path.resolve(TMP_FILES_PATH, `${guid()}`);
+    ensureDirectoryExistence(tmpPath);
+    return co(function *() {
+        try {
+            yield downloadAsyn(url, tmpPath);
+            // 出问题了返回原来的url
+        } catch (error) {
+            console.log('出问题了返回原来的url');
+            return url;
+        }
+        let hashKey = yield getFileHash(tmpPath);
+        let key = hash2Key(hashKey);
+        yield copyFile(tmpPath, `${FILES_PATH}/${key}`);
+        yield unlinkAsync(tmpPath);
+        return `${key}`;
+    });
 }
 
 const getFileHash = (filePath) => {
@@ -142,10 +143,10 @@ const key2path = (key) => {
 
 const debounce = (func, wait, immediate) => {
     var timeout = null,
-        debounced = function() {
+        debounced = function () {
             var context = this,
                 args = arguments;
-            var later = function() {
+            var later = function () {
                 timeout = null;
                 if (!immediate) func.apply(context, args);
             };
@@ -154,20 +155,20 @@ const debounce = (func, wait, immediate) => {
             timeout = setTimeout(later, wait);
             if (callNow) func.apply(context, args);
         };
-    debounced.cancel = function() {
+    debounced.cancel = function () {
         clearTimeout(timeout);
     }
     return debounced;
 };
 
-const throttle = function(func, wait, options) {
+const throttle = function (func, wait, options) {
     var timeout, context, args, result;
     var previous = 0;
     if (!options) options = {};
-    var getNow = function() {
+    var getNow = function () {
         return new Date().getTime();
     }
-    var later = function() {
+    var later = function () {
         // 如果options.leading === false在这里重新设置 previous
         previous = options.leading === false ? 0 : getNow();
         timeout = null;
@@ -175,7 +176,7 @@ const throttle = function(func, wait, options) {
         if (!timeout) context = args = null;
     };
 
-    var throttled = function() {
+    var throttled = function () {
         var now = getNow();
         if (!previous && options.leading === false) previous = now;
         var remaining = wait - (now - previous);
@@ -201,7 +202,7 @@ const throttle = function(func, wait, options) {
         return result;
     };
 
-    throttled.cancel = function() {
+    throttled.cancel = function () {
         clearTimeout(timeout);
         previous = 0;
         timeout = context = args = null;
@@ -217,17 +218,19 @@ const findIndexById = (list, item) => {
 }
 
 const pick = (o, ...props) => {
-  return Object.assign({}, ...props.map((prop) => {return {[prop]: o[prop]};}))
+    return Object.assign({}, ...props.map((prop) => {
+        return {[prop]: o[prop]};
+    }))
 }
 
 const chineseDate = (date) => {
-  let tmpDate = new Date(date);
-  tmpDate.setHours(date.getHours() + 8);
-  return tmpDate;
+    let tmpDate = new Date(date);
+    tmpDate.setHours(date.getHours() + 8);
+    return tmpDate;
 }
 
 const ppDate = (date) => {
-  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear().toString()}`;
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear().toString()}`;
 }
 
 // sequial process
@@ -257,31 +260,31 @@ const ppDate = (date) => {
 
 // parallel process
 const placeImageToLocalAsyn = (content) => {
-  content = content || '';
-  let pp = /!\[(.*?)\]\((.*?)\)/i;
-  let ppp = /[http|https]/;
-  let result = content;
-  let m;
-  let promisesHash = {};
-  return co (function * () {
-    do {
-        m = pp.exec(content);
-        if (m) {
-          let matchTxt = m[0];
-          let text = m[1];
-          let href = m[2];
-          if(ppp.test(href)){
-            promisesHash[href] = downloadImageAsyn(href);
-            content = content.split(matchTxt).join('');
-          }
-        }
-    } while (m);
-    let res = yield promisesHash;
-    Object.keys(res).forEach((href) => {
-      result = result.split(href).join(res[href]);
+    content = content || '';
+    let pp = /!\[(.*?)\]\((.*?)\)/i;
+    let ppp = /[http|https]/;
+    let result = content;
+    let m;
+    let promisesHash = {};
+    return co(function *() {
+        do {
+            m = pp.exec(content);
+            if (m) {
+                let matchTxt = m[0];
+                let text = m[1];
+                let href = m[2];
+                if (ppp.test(href)) {
+                    promisesHash[href] = downloadImageAsyn(href);
+                    content = content.split(matchTxt).join('');
+                }
+            }
+        } while (m);
+        let res = yield promisesHash;
+        Object.keys(res).forEach((href) => {
+            result = result.split(href).join(res[href]);
+        });
+        return result;
     });
-    return result;
-  });
 }
 
 module.exports = {

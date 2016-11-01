@@ -1,5 +1,3 @@
-const electron = require('electron');
-
 import windows from './windows';
 
 export function log(...args) {

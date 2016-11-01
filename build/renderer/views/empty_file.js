@@ -38,3 +38,4 @@ var EmptyFile = function (_Component) {
 }(_react.Component);
 
 exports.default = EmptyFile;
+//# sourceMappingURL=empty_file.js.map

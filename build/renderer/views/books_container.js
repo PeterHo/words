@@ -396,3 +396,4 @@ var _initialiseProps = function _initialiseProps() {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BooksContainer);
+//# sourceMappingURL=books_container.js.map

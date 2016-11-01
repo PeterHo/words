@@ -60,3 +60,4 @@ var Spinner = function Spinner(props) {
 };
 
 exports.default = Spinner;
+//# sourceMappingURL=spinner.js.map

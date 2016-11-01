@@ -105,3 +105,4 @@ var App = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(App);
+//# sourceMappingURL=app.js.map

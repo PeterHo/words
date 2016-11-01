@@ -1,60 +1,34 @@
 const electron = require('electron');
 const {app, BrowserWindow, Menu, ipcMain, ipcRenderer} = electron;
 
-const path = require('path');
-const windows = require('./windows');
+import * as wnd from './windows';
 const ipc = require('./ipc');
-const menu = require('./menu');
-const tray = require('./tray')
-import config from '../config';
 
-var menubar = tray({
-    height: 450,
-    showDockIcon: true,
-    index: `file://${path.resolve(__dirname, '../../static/tray.html')}`,
-    icon: path.resolve(__dirname, '../../static/images/IconTemplate.png')
-});
-
-menubar.on('ready', function () {
-});
-
-function init() {
-    app.on('ready', function () {
-        windows.main.init();
-        windows.worker.init();
-        menu.init();
-    });
-}
-
-var shouldQuit = false;
-
-if (!shouldQuit) {
-    shouldQuit = app.makeSingleInstance(onAppOpen);
-    if (shouldQuit) {
-        app.quite();
+// 判断多开
+const shouldQuit = app.makeSingleInstance(() => {
+    if (wnd.mainWnd) {
+        if (wnd.mainWnd.isMinimized()) {
+            wnd.mainWnd.restore();
+        }
+        wnd.mainWnd.focus();
     }
+});
+
+if (shouldQuit) {
+    app.quit();
 }
 
-if (!shouldQuit) {
-    init();
-}
-
+// 初始化ipc
 ipc.init();
 
+// 初始化程序
+app.on('ready', function () {
+    wnd.init();
+});
+
+// 关闭程序
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
         app.quit();
     }
 });
-
-app.on('activate', function () {
-    if (windows.main.win === null) {
-        windows.main.init();
-    }
-});
-
-function onAppOpen() {
-    if (app.ipcReady) {
-        windows.main.show();
-    }
-}

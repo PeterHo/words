@@ -1,14 +1,11 @@
 'use strict';
 
-var _log = require('../log');
-
 var worker = module.exports = {
     win: null,
     init: init,
     send: send,
     dispatch: dispatch
 };
-
 
 // 做后台工作的invisible window
 var electron = require('electron');
