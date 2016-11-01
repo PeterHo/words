@@ -60,4 +60,3 @@ function dispatch() {
 
     send.apply(undefined, ['dispatch'].concat(args));
 }
-//# sourceMappingURL=windows.js.map

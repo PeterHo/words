@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/config.js"],"names":["dev"],"mappings":";;;;;kBAAe;AACXA,SAAK;AADM,C","file":"config.js","sourcesContent":["export default {\n    dev: true\n}\n"]}

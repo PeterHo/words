@@ -31,4 +31,3 @@ function error() {
 
     (_windows$main2 = _windows2.default.main).send.apply(_windows$main2, ['error'].concat(args));
 }
-//# sourceMappingURL=log.js.map

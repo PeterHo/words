@@ -1,30 +1,18 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = require('react-dom');
 
-var _app = require('./views/app');
-
-var _app2 = _interopRequireDefault(_app);
-
-var _set_db = require('../main/set_db');
+var _redux = require('redux');
 
 var _reactRedux = require('react-redux');
-
-var _store = require('./store');
-
-var _store2 = _interopRequireDefault(_store);
-
-var _constants = require('../constants');
-
-var _constants2 = _interopRequireDefault(_constants);
-
-var _reactTapEventPlugin = require('react-tap-event-plugin');
-
-var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 
 var _MuiThemeProvider = require('material-ui/styles/MuiThemeProvider');
 
@@ -34,54 +22,37 @@ var _getMuiTheme = require('material-ui/styles/getMuiTheme');
 
 var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
 
+var _reactTapEventPlugin = require('react-tap-event-plugin');
+
+var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
+
+var _App = require('./containers/App');
+
+var _App2 = _interopRequireDefault(_App);
+
+var _reducers = require('./reducers');
+
+var _reducers2 = _interopRequireDefault(_reducers);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-window.constants = _constants2.default;
-var FILES_PATH = _constants2.default.FILES_PATH;
-
-// material-ui use the plugin
 
 (0, _reactTapEventPlugin2.default)();
 
-// material-ui theme provider
-
-
 var muiTheme = (0, _getMuiTheme2.default)({
-    fontFamily: '"YaHei Consolas Hybrid", Consolas, 微软雅黑, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, Monaco, courier, monospace !important',
-    palette: {
-        primary1Color: '#e78170'
-    }
+    fontFamily: "WenQuanYi Micro Hei"
 });
 
-var ipcRenderer = require('electron').ipcRenderer;
+var store = (0, _redux.createStore)(_reducers2.default);
 
-// subscribe redux to control new note menu item
-function controlNewNoteMenu() {
-    var globalBook = null;
-    _store2.default.subscribe(function () {
-        if (!!_store2.default.getState().globalBook._id != globalBook) {
-            globalBook = !!_store2.default.getState().globalBook._id;
-            if (_store2.default.getState().globalBook._id) {
-                ipcRenderer.send('enableItem', 'New Note');
-            } else {
-                ipcRenderer.send('disableItem', 'New Note');
-            }
-        }
-    });
-}
+(0, _reactDom.render)(_react2.default.createElement(
+    _reactRedux.Provider,
+    { store: store },
+    _react2.default.createElement(
+        _MuiThemeProvider2.default,
+        { muiTheme: muiTheme },
+        _react2.default.createElement(_App2.default, null)
+    )
+), document.getElementById('root'));
 
-controlNewNoteMenu();
-
-document.addEventListener('DOMContentLoaded', function () {
-    (0, _reactDom.render)(_react2.default.createElement(
-        _reactRedux.Provider,
-        { store: _store2.default },
-        _react2.default.createElement(
-            _MuiThemeProvider2.default,
-            { muiTheme: muiTheme },
-            _react2.default.createElement(_app2.default, null)
-        )
-    ), document.getElementById('root'));
-}, false);
-
-window.FILES_PATH = FILES_PATH;
+exports.default = store;
+//# sourceMappingURL=main.js.map

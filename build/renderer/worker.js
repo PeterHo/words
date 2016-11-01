@@ -256,3 +256,4 @@ function mdLocalImageOut(filename, content) {
 }
 
 init();
+//# sourceMappingURL=worker.js.map

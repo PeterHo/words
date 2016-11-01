@@ -58,4 +58,3 @@ var init = function init() {
 
 exports.mainMsgQueue = mainMsgQueue;
 exports.init = init;
-//# sourceMappingURL=ipc.js.map

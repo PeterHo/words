@@ -1,8 +1,7 @@
-const dispatchHandlers = {
-}
+const dispatchHandlers = {};
 
 export default dispatchHandlers;
 
-export function setDispatchHandler (name, callback) {
-  dispatchHandlers[name] = callback;
+export function setDispatchHandler(name, callback) {
+    dispatchHandlers[name] = callback;
 }

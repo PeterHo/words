@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/renderer/constants/ActionTypes.js"],"names":["SELECT_PREFIX_LETTER","SELECT_PREFIX"],"mappings":";;;;;AAAO,IAAMA,sDAAuB,sBAA7B;AACA,IAAMC,wCAAgB,eAAtB","file":"ActionTypes.js","sourcesContent":["export const SELECT_PREFIX_LETTER = 'SELECT_PREFIX_LETTER';\nexport const SELECT_PREFIX = 'SELECT_PREFIX';\n"]}

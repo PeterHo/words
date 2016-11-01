@@ -41,4 +41,3 @@ db.files.ensureIndex({ fieldName: 'bookId' });
 db.files.ensureIndex({ fieldName: '_id', unique: true }, function (err) {});
 
 module.exports = db;
-//# sourceMappingURL=set_db.js.map
